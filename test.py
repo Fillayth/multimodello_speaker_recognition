@@ -49,12 +49,16 @@ take = int(input().strip())
 if take == 1:
     print("Enter the File name from Test Audio Sample Collection :")
     path = input().strip()
+<<<<<<< HEAD
     print("insert number class")
     i= input().strip()
+=======
+>>>>>>> b3b4c7d (a)
     print("Testing Audio : ", path)
     
     sr, audio = read(source + path)
     vector = extract_features(audio, sr)
+<<<<<<< HEAD
     
     for j in range(len(vector)):
             class_y.append((i)) 
@@ -65,6 +69,16 @@ if take == 1:
     winner =np.argmax(np.sum(predict, axis=0))
     print(winner, result)
     class_y=[]
+=======
+     
+    svm = svm_models[0]
+    predict= svm.predict(vector) #predizione della classe di ogni segmento dell'audio
+    total_frames=predict.size #numero totale di segmenti
+    uniques, counts  =np.unique(predict, return_counts=True) #numero di occorrenze delle predizioni
+    res=dict(zip(counts,uniques))
+    user=res.get(np.max(counts))
+    print("il vincitore è l'utente",user,"con",(np.max(counts)/total_frames)*100,"%")
+>>>>>>> b3b4c7d (a)
 
 elif take == 0:
     test_file = "development_set_test.txt"
@@ -78,6 +92,7 @@ elif take == 0:
         sr, audio = read(source + path)
         vector = extract_features(audio, sr)
         
+<<<<<<< HEAD
         
         for j in range(len(vector)):
             class_y.append((i)) 
@@ -94,17 +109,30 @@ elif take == 0:
         class_y=[]
         count=count+1
 
+=======
+        svm = svm_models[0]
+        predict= svm.predict(vector) #predizione della classe di ogni segmento dell'audio
+        total_frames=predict.size #numero totale di segmenti
+        uniques, counts  =np.unique(predict, return_counts=True) #numero di occorrenze delle predizioni
+        res=dict(zip(counts,uniques))
+        user=res.get(np.max(counts))
+        print("il vincitore è l'utente",user,"con",(np.max(counts)/total_frames)*100,"%")
+>>>>>>> b3b4c7d (a)
 
 #knn testing
 if take == 1:
     print("Enter the File name from Test Audio Sample Collection :")
     path = input().strip()
+<<<<<<< HEAD
     print("insert number class")
     i= input().strip()
+=======
+>>>>>>> b3b4c7d (a)
     print("Testing Audio : ", path)
     sr, audio = read(source + path)
     vector = extract_features(audio, sr)
     
+<<<<<<< HEAD
     for j in range(len(vector)):
             class_y.append((i)) 
     
@@ -113,6 +141,15 @@ if take == 1:
     predict= knn.predict_proba(vector)
     winner =np.argmax(np.sum(predict, axis=0))
     print(winner, result)
+=======
+    knn = knn_models[0]
+    predict= knn.predict(vector) #predizione della classe di ogni segmento dell'audio
+    total_frames=predict.size #numero totale di segmenti
+    uniques, counts  =np.unique(predict, return_counts=True) #numero di occorrenze delle predizioni
+    res=dict(zip(counts,uniques))
+    user=res.get(np.max(counts))
+    print("il vincitore è l'utente",user,"con",(np.max(counts)/total_frames)*100,"%")
+>>>>>>> b3b4c7d (a)
     
 elif take == 0:
     test_file = "development_set_test.txt"
@@ -126,6 +163,7 @@ elif take == 0:
         sr, audio = read(source + path)
         vector = extract_features(audio, sr)
         
+<<<<<<< HEAD
         
         #for j in range(len(vector)):
         #    class_y.append((i)) 
@@ -140,6 +178,16 @@ elif take == 0:
         #  i=i+1
         class_y=[]
         count=count+1
+=======
+    
+        knn = knn_models[0]
+        predict= knn.predict(vector) #predizione della classe di ogni segmento dell'audio
+        total_frames=predict.size #numero totale di segmenti
+        uniques, counts  =np.unique(predict, return_counts=True) #numero di occorrenze delle predizioni
+        res=dict(zip(counts,uniques))
+        user=res.get(np.max(counts))
+        print("il vincitore è l'utente",user,"con",(np.max(counts)/total_frames)*100,"%")
+>>>>>>> b3b4c7d (a)
 
 
 #Verifica Gmm

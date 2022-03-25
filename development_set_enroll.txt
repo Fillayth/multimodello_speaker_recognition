@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 anthonyschaller-20071221-/wav/a0491.wav
 anthonyschaller-20071221-/wav/a0492.wav
 anthonyschaller-20071221-/wav/a0493.wav
@@ -33,3 +34,40 @@ Artem-20121123-ebd/wav/b0132.wav
 Artem-20121123-ebd/wav/b0133.wav
 Artem-20121123-ebd/wav/b0134.wav
 Artem-20121123-ebd/wav/b0135.wav
+=======
+anthonyschaller-20071221-/wav/a0491.wav
+anthonyschaller-20071221-/wav/a0492.wav
+anthonyschaller-20071221-/wav/a0493.wav
+anthonyschaller-20071221-/wav/a0494.wav
+anthonyschaller-20071221-/wav/a0495.wav
+Apple_Eater-20091026-yul/wav/a0052.wav
+Apple_Eater-20091026-yul/wav/a0053.wav
+Apple_Eater-20091026-yul/wav/a0054.wav
+Apple_Eater-20091026-yul/wav/a0055.wav
+Apple_Eater-20091026-yul/wav/a0056.wav
+Ara-20091020-vni/wav/a0517.wav
+Ara-20091020-vni/wav/a0518.wav
+Ara-20091020-vni/wav/a0519.wav
+Ara-20091020-vni/wav/a0520.wav
+Ara-20091020-vni/wav/a0521.wav
+argail-20090722-gau/wav/rb-12.wav
+argail-20090722-gau/wav/rb-13.wav
+argail-20090722-gau/wav/rb-14.wav
+argail-20090722-gau/wav/rb-15.wav
+argail-20090722-gau/wav/rb-16.wav
+ariyan-20120801-gra/wav/b0265.wav
+ariyan-20120801-gra/wav/b0266.wav
+ariyan-20120801-gra/wav/b0267.wav
+ariyan-20120801-gra/wav/b0268.wav
+ariyan-20120801-gra/wav/b0269.wav
+arjuan-20100820-acz/wav/b0217.wav
+arjuan-20100820-acz/wav/b0218.wav
+arjuan-20100820-acz/wav/b0219.wav
+arjuan-20100820-acz/wav/b0220.wav
+arjuan-20100820-acz/wav/b0221.wav
+Artem-20121123-ebd/wav/b0131.wav
+Artem-20121123-ebd/wav/b0132.wav
+Artem-20121123-ebd/wav/b0133.wav
+Artem-20121123-ebd/wav/b0134.wav
+Artem-20121123-ebd/wav/b0135.wav
+>>>>>>> b3b4c7d (a)
