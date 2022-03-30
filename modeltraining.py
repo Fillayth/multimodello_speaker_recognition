@@ -59,7 +59,7 @@ for path in file_paths:
         class_x=np.vstack((class_x,features))
 
      for j in range(len(features)):
-            class_y.append((i))    
+            class_y.append((path.split("-")[0]))    
       
      #GMM Fit
      gmm = GMM(n_components = 16, covariance_type='diag',n_init = 3)
