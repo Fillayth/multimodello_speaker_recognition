@@ -50,20 +50,16 @@ for path in file_paths:
     
     
      #a differenza del vettore utile alla produzione dei gmm (ricreato per ogni persona) per i classificatori si genera un un'unico dataset
-     #assegnando ad ogni feature proveniente dallo stesso soggetto la sua classe rappresentativa
+     #assegnando ad ogni feature proveniente dallo stesso soggetto una classe numerica crescente
     if count == 5:
      
-     #costruzione dataset e lista dei target per i classificatori
      if class_x.size == 0:
         class_x= features
      else:    
         class_x=np.vstack((class_x,features))
+
      for j in range(len(features)):
-<<<<<<< HEAD
-            class_y.append((i))    
-=======
             class_y.append((path.split("-")[0]))    
->>>>>>> b3b4c7d (a)
       
      #GMM Fit
      gmm = GMM(n_components = 16, covariance_type='diag',n_init = 3)
@@ -79,6 +75,7 @@ for path in file_paths:
      count=0
      
     count = count + 1       
+
         
 #SVM Fit
 svm = SVC(C=100.0, kernel='rbf', gamma='auto', shrinking=True, probability=True, tol=0.001, cache_size=200, 
@@ -87,6 +84,9 @@ svm.fit(class_x,class_y)
 #dumping the trained svm model
 picklefile = "svmodel.svm"
 cPickle.dump(svm, open(destsvm + picklefile, 'wb'))
+
+
+
 
 #KNN Fit
 knn = KNN()

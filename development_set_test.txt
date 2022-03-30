@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 anthonyschaller-20071221-/wav/a0498.wav
 anthonyschaller-20071221-/wav/a0499.wav
 anthonyschaller-20071221-/wav/a0500.wav
@@ -20,26 +19,3 @@ arjuan-20100820-acz/wav/b0223.wav
 Artem-20121123-ebd/wav/b0136.wav
 Artem-20121123-ebd/wav/b0137.wav
 Artem-20121123-ebd/wav/b0138.wav
-=======
-anthonyschaller-20071221-/wav/a0498.wav
-anthonyschaller-20071221-/wav/a0499.wav
-anthonyschaller-20071221-/wav/a0500.wav
-Apple_Eater-20091026-yul/wav/a0057.wav
-Apple_Eater-20091026-yul/wav/a0058.wav
-Ara-20091020-vni/wav/a0523.wav
-Ara-20091020-vni/wav/a0524.wav
-Ara-20091020-vni/wav/a0525.wav
-Ara-20091020-vni/wav/a0526.wav
-argail-20090722-gau/wav/rb-17.wav
-argail-20090722-gau/wav/rb-18.wav
-argail-20090722-gau/wav/rb-19.wav
-ariyan-20120801-gra/wav/b0271.wav
-ariyan-20120801-gra/wav/b0272.wav
-ariyan-20120801-gra/wav/b0273.wav
-ariyan-20120801-gra/wav/b0274.wav
-arjuan-20100820-acz/wav/b0222.wav
-arjuan-20100820-acz/wav/b0223.wav
-Artem-20121123-ebd/wav/b0136.wav
-Artem-20121123-ebd/wav/b0137.wav
-Artem-20121123-ebd/wav/b0138.wav
->>>>>>> b3b4c7d (a)
