@@ -4,13 +4,13 @@ import pickle as cPickle
 import numpy as np
 from scipy.io.wavfile import read
 from featureextraction import extract_features
-#from speakerfeatures import extract_features
+import matplotlib.pyplot as plt
 import warnings
 warnings.filterwarnings("ignore")
 
 
 # path to training data
-source = "it_development_set/"
+source = "en_development_set/"
 
 # path where training speakers will be saved
 destgmm = 'Speakers_models/Gmm/'
@@ -39,8 +39,7 @@ speakers = [fname.split("/")[-1].split(".gmm")[0] for fname
 
 error = 0
 total_sample = 0.0
-class_y=[]
-i=0
+
 
 print("Do you want to Test a Single Audio: Press '1' or The complete Test Audio Sample: Press '0' ?")
 take = int(input().strip())
@@ -60,12 +59,15 @@ if take == 1:
     uniques, counts  =np.unique(predict, return_counts=True) #numero di occorrenze delle predizioni
     res=dict(zip(counts,uniques))
     user=res.get(np.max(counts))
-    print("il vincitore è l'utente",user,"con",np.round((np.max(counts)/total_frames)*100,2),"%")
+    accuracy=np.round((np.max(counts)/total_frames)*100,2)
+    print("il vincitore è l'utente",user,"con",accuracy,"%")
 
 elif take == 0:
-    test_file = "it_development_set_test.txt"
+    test_file = "en_development_set_test.txt"
     file_paths = open(test_file, 'r')
     count=1
+    accuracy_vec=[]
+    usernames=[]
     # Read the test directory and get the list of test audio files
     for path in file_paths:
 
@@ -74,13 +76,33 @@ elif take == 0:
         sr, audio = read(source + path)
         vector = extract_features(audio, sr)
         
+        
         svm = svm_models[0]
         predict= svm.predict(vector) #predizione della classe di ogni segmento dell'audio
         total_frames=predict.size #numero totale di segmenti
         uniques, counts  =np.unique(predict, return_counts=True) #numero di occorrenze delle predizioni
         res=dict(zip(counts,uniques))
         user=res.get(np.max(counts))
-        print("il vincitore è l'utente",user,"con",np.round((np.max(counts)/total_frames)*100,2),"%")
+        accuracy=np.round((np.max(counts)/total_frames)*100,2)
+        print("il vincitore è l'utente",user,"con",accuracy,"%")
+        
+     
+        accuracy_vec.append(accuracy)
+        usernames.append(user)
+
+
+    #fig, ax = plt.subplots()
+    #ax.plot(usernames, accuracy_vec, 'o')
+
+   
+    #ax.set_ylabel(' Accuracy %')
+    #ax.set_xlabel('utente')
+    #ax.set_xticks(accuracy_vec)
+    #ax.set_title(' SVM identification')       
+    #plt.grid()
+    #plt.show()
+
+
 
 #knn testing
 if take == 1:
@@ -96,12 +118,15 @@ if take == 1:
     uniques, counts  =np.unique(predict, return_counts=True) #numero di occorrenze delle predizioni
     res=dict(zip(counts,uniques))
     user=res.get(np.max(counts))
-    print("il vincitore è l'utente",user,"con",np.round((np.max(counts)/total_frames)*100,2),"%")
+    accuracy=np.round((np.max(counts)/total_frames)*100,2)
+    print("il vincitore è l'utente",user,"con",accuracy,"%")
     
 elif take == 0:
-    test_file = "it_development_set_test.txt"
+    test_file = "en_development_set_test.txt"
     file_paths = open(test_file, 'r')
     count=1
+    accuracy_vec=[]
+    usernames=[]
     # Read the test directory and get the list of test audio files
     for path in file_paths:
 
@@ -117,7 +142,21 @@ elif take == 0:
         uniques, counts  =np.unique(predict, return_counts=True) #numero di occorrenze delle predizioni
         res=dict(zip(counts,uniques))
         user=res.get(np.max(counts))
-        print("il vincitore è l'utente",user,"con",np.round((np.max(counts)/total_frames)*100,2),"%")
+        accuracy=np.round((np.max(counts)/total_frames)*100,2)
+        print("il vincitore è l'utente",user,"con",accuracy,"%")
+
+        accuracy_vec.append(accuracy)
+        usernames.append(user)
+    fig, ax = plt.subplots()
+    ax.plot(usernames, accuracy_vec, 'o')
+
+   
+    ax.set_ylabel('Accuracy %')
+    ax.set_xlabel('utente')
+    #ax.set_xticks(accuracy_vec)
+    ax.set_title('KNN identification')       
+    plt.grid()
+    plt.show()
 
 
 #Verifica Gmm
@@ -142,7 +181,7 @@ if take == 1:
     time.sleep(1.0)
 
 elif take == 0:
-    test_file = "it_development_set_test.txt"
+    test_file = "en_development_set_test.txt"
     file_paths = open(test_file, 'r')
 
     # Read the test directory and get the list of test audio files

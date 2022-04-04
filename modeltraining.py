@@ -11,13 +11,13 @@ warnings.filterwarnings("ignore")
 
 # path to training data
 # source   = "development_set/"
-source = "it_development_set/"
+source = "en_development_set/"
 
 # path where training speakers will be saved
 destgmm = 'Speakers_models/Gmm/'
 destsvm = "Speakers_models/Svm/"
 destknn = "Speakers_models/Knn/"
-train_file = "it_development_set_enroll.txt"
+train_file = "en_development_set_enroll.txt"
 file_paths = open(train_file, 'r')
 
 i=0
@@ -78,8 +78,8 @@ for path in file_paths:
 
         
 #SVM Fit
-svm = SVC(C=1000.0, kernel='rbf', gamma='auto', shrinking=True, probability=True, tol=0.001, cache_size=200, 
-class_weight=None, verbose=True, max_iter=- 1, decision_function_shape='ovo', break_ties=False, random_state=None)
+svm = SVC(C=100.0, kernel='rbf', gamma='auto', probability=True, tol=0.001, cache_size=200, 
+class_weight='balanced', verbose=False, max_iter=- 1, decision_function_shape='ovo', break_ties=False, random_state=None)
 svm.fit(class_x,class_y)       
 #dumping the trained svm model
 picklefile = "svmodel.svm"
@@ -89,7 +89,8 @@ cPickle.dump(svm, open(destsvm + picklefile, 'wb'))
 
 
 #KNN Fit
-knn = KNN()
+knn = KNN(n_neighbors=10, weights="uniform", algorithm="auto", leaf_size=30,
+p=2, metric="minkowski", metric_params=None, n_jobs=None)
 knn.fit(class_x,class_y)
 #dumping the trained knn model
 picklefile = "knnmodel.knn"
