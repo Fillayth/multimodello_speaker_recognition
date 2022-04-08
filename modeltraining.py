@@ -6,6 +6,8 @@ from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier as KNN
 from featureextraction import extract_features
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import OneHotEncoder
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -76,7 +78,15 @@ for path in file_paths:
      
     count = count + 1       
 
-        
+#one hot encoder
+#label_encoder =LabelEncoder()
+#integer_encoded = label_encoder.fit_transform(class_y)        
+#onehot_encoder = OneHotEncoder(sparse=False)
+#integer_encoded = integer_encoded.reshape(len(integer_encoded), 1)
+#onehot_encoded = onehot_encoder.fit_transform(integer_encoded)
+#print(onehot_encoded)
+
+
 #SVM Fit
 svm = SVC(C=100.0, kernel='rbf', gamma='auto', probability=True, tol=0.001, cache_size=200, 
 class_weight='balanced', verbose=False, max_iter=- 1, decision_function_shape='ovo', break_ties=False, random_state=None)

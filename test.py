@@ -5,6 +5,8 @@ import numpy as np
 from scipy.io.wavfile import read
 from featureextraction import extract_features
 import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import ConfusionMatrixDisplay
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -39,7 +41,7 @@ speakers = [fname.split("/")[-1].split(".gmm")[0] for fname
 
 error = 0
 total_sample = 0.0
-
+class_y=[]
 
 print("Do you want to Test a Single Audio: Press '1' or The complete Test Audio Sample: Press '0' ?")
 take = int(input().strip())
@@ -68,6 +70,7 @@ elif take == 0:
     count=1
     accuracy_vec=[]
     usernames=[]
+    tot_predict=[]
     # Read the test directory and get the list of test audio files
     for path in file_paths:
 
@@ -75,11 +78,14 @@ elif take == 0:
         print("(SVM)","\n","Testing Audio : ", path)
         sr, audio = read(source + path)
         vector = extract_features(audio, sr)
-        
-        
+
         svm = svm_models[0]
         predict= svm.predict(vector) #predizione della classe di ogni segmento dell'audio
         total_frames=predict.size #numero totale di segmenti
+
+        for j in range(len(predict)):
+            class_y.append((path.split("-")[0]))
+
         uniques, counts  =np.unique(predict, return_counts=True) #numero di occorrenze delle predizioni
         res=dict(zip(counts,uniques))
         user=res.get(np.max(counts))
@@ -89,8 +95,12 @@ elif take == 0:
      
         accuracy_vec.append(accuracy)
         usernames.append(user)
+        for j in range(len(predict)):
+            tot_predict.append(predict[j])
 
-
+    #Sezione di Plotting (Confusion Matrix - Accuracy %)
+    cm = confusion_matrix(class_y,tot_predict)
+    cm_display = ConfusionMatrixDisplay(cm).plot()
     #fig, ax = plt.subplots()
     #ax.plot(usernames, accuracy_vec, 'o')
 
@@ -127,6 +137,7 @@ elif take == 0:
     count=1
     accuracy_vec=[]
     usernames=[]
+    tot_predict=[]
     # Read the test directory and get the list of test audio files
     for path in file_paths:
 
@@ -147,16 +158,20 @@ elif take == 0:
 
         accuracy_vec.append(accuracy)
         usernames.append(user)
-    fig, ax = plt.subplots()
-    ax.plot(usernames, accuracy_vec, 'o')
-
-   
-    ax.set_ylabel('Accuracy %')
-    ax.set_xlabel('utente')
+        for j in range(len(predict)):
+            tot_predict.append(predict[j])
+    
+    cm = confusion_matrix(class_y,tot_predict)
+    cm_display = ConfusionMatrixDisplay(cm).plot()
+    
+    #fig, ax = plt.subplots()
+    #ax.plot(usernames, accuracy_vec, 'o')
+    #ax.set_ylabel('Accuracy %')
+    #ax.set_xlabel('utente')
     #ax.set_xticks(accuracy_vec)
-    ax.set_title('KNN identification')       
-    plt.grid()
-    plt.show()
+    #ax.set_title('KNN identification')       
+    #plt.grid()
+    #plt.show()
 
 
 #Verifica Gmm
@@ -213,4 +228,4 @@ elif take == 0:
 
     print("The Accuracy Percentage for the current testing Performance with MFCC + GMM is : ", accuracy, "%")
 
-print("Hurrey ! Speaker identified. Mission Accomplished Successfully. ")
+
