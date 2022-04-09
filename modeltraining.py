@@ -13,13 +13,13 @@ warnings.filterwarnings("ignore")
 
 # path to training data
 # source   = "development_set/"
-source = "en_development_set/"
+source = "it_development_set/"
 
 # path where training speakers will be saved
 destgmm = 'Speakers_models/Gmm/'
 destsvm = "Speakers_models/Svm/"
 destknn = "Speakers_models/Knn/"
-train_file = "en_development_set_enroll.txt"
+train_file = "it_development_set_enroll.txt"
 file_paths = open(train_file, 'r')
 
 i=0

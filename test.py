@@ -12,7 +12,7 @@ warnings.filterwarnings("ignore")
 
 
 # path to training data
-source = "en_development_set/"
+source = "it_development_set/"
 
 # path where training speakers will be saved
 destgmm = 'Speakers_models/Gmm/'
@@ -65,7 +65,7 @@ if take == 1:
     print("il vincitore è l'utente",user,"con",accuracy,"%")
 
 elif take == 0:
-    test_file = "en_development_set_test.txt"
+    test_file = "it_development_set_test.txt"
     file_paths = open(test_file, 'r')
     count=1
     accuracy_vec=[]
@@ -99,8 +99,9 @@ elif take == 0:
             tot_predict.append(predict[j])
 
     #Sezione di Plotting (Confusion Matrix - Accuracy %)
+    user_list =np.unique(class_y)
     cm = confusion_matrix(class_y,tot_predict)
-    cm_display = ConfusionMatrixDisplay(cm).plot()
+    cm_display = ConfusionMatrixDisplay(cm, display_labels=user_list).plot()
     #fig, ax = plt.subplots()
     #ax.plot(usernames, accuracy_vec, 'o')
 
@@ -132,7 +133,7 @@ if take == 1:
     print("il vincitore è l'utente",user,"con",accuracy,"%")
     
 elif take == 0:
-    test_file = "en_development_set_test.txt"
+    test_file = "it_development_set_test.txt"
     file_paths = open(test_file, 'r')
     count=1
     accuracy_vec=[]
@@ -162,7 +163,8 @@ elif take == 0:
             tot_predict.append(predict[j])
     
     cm = confusion_matrix(class_y,tot_predict)
-    cm_display = ConfusionMatrixDisplay(cm).plot()
+    user_list =np.unique(class_y)
+    cm_display = ConfusionMatrixDisplay(cm, display_labels=user_list).plot()
     
     #fig, ax = plt.subplots()
     #ax.plot(usernames, accuracy_vec, 'o')
@@ -196,7 +198,7 @@ if take == 1:
     time.sleep(1.0)
 
 elif take == 0:
-    test_file = "en_development_set_test.txt"
+    test_file = "it_development_set_test.txt"
     file_paths = open(test_file, 'r')
 
     # Read the test directory and get the list of test audio files
