@@ -46,32 +46,16 @@ class_y=[]
 print("Do you want to Test a Single Audio: Press '1' or The complete Test Audio Sample: Press '0' ?")
 take = int(input().strip())
 
-#Verifica Svm
-if take == 1:
-    print("Enter the File name from Test Audio Sample Collection :")
-    path = input().strip()
-    print("(SVM)","\n","Testing Audio : ", path)
-    
-    sr, audio = read(source + path)
-    vector = extract_features(audio, sr)
-     
-    svm = svm_models[0]
-    predict= svm.predict(vector) #predizione della classe di ogni segmento dell'audio
-    total_frames=predict.size #numero totale di segmenti
-    uniques, counts  =np.unique(predict, return_counts=True) #numero di occorrenze delle predizioni
-    res=dict(zip(counts,uniques))
-    user=res.get(np.max(counts))
-    accuracy=np.round((np.max(counts)/total_frames)*100,2)
-    print("il vincitore è l'utente",user,"con",accuracy,"%")
 
-elif take == 0:
+#verifica Test-Set
+if take == 0:
+    #svm Section
     test_file = "it_development_set_test.txt"
     file_paths = open(test_file, 'r')
-    count=1
-    accuracy_vec=[]
+    svm_accuracy_vec=[]
     usernames=[]
-    tot_predict=[]
-    # Read the test directory and get the list of test audio files
+    svm_tot_predict=[]
+    
     for path in file_paths:
 
         path = path.strip()
@@ -93,53 +77,17 @@ elif take == 0:
         print("il vincitore è l'utente",user,"con",accuracy,"%")
         
      
-        accuracy_vec.append(accuracy)
+        svm_accuracy_vec.append(accuracy)
         usernames.append(user)
         for j in range(len(predict)):
-            tot_predict.append(predict[j])
+            svm_tot_predict.append(predict[j])
+        #end Svm Section
 
-    #Sezione di Plotting (Confusion Matrix - Accuracy %)
-    user_list =np.unique(class_y)
-    cm = confusion_matrix(class_y,tot_predict)
-    cm_display = ConfusionMatrixDisplay(cm, display_labels=user_list).plot()
-    #fig, ax = plt.subplots()
-    #ax.plot(usernames, accuracy_vec, 'o')
-
-   
-    #ax.set_ylabel(' Accuracy %')
-    #ax.set_xlabel('utente')
-    #ax.set_xticks(accuracy_vec)
-    #ax.set_title(' SVM identification')       
-    #plt.grid()
-    #plt.show()
-
-
-
-#knn testing
-if take == 1:
-    print("Enter the File name from Test Audio Sample Collection :")
-    path = input().strip()
-    print("(KNN)","\n","Testing Audio : ", path)
-    sr, audio = read(source + path)
-    vector = extract_features(audio, sr)
-    
-    knn = knn_models[0]
-    predict= knn.predict(vector) #predizione della classe di ogni segmento dell'audio
-    total_frames=predict.size #numero totale di segmenti
-    uniques, counts  =np.unique(predict, return_counts=True) #numero di occorrenze delle predizioni
-    res=dict(zip(counts,uniques))
-    user=res.get(np.max(counts))
-    accuracy=np.round((np.max(counts)/total_frames)*100,2)
-    print("il vincitore è l'utente",user,"con",accuracy,"%")
-    
-elif take == 0:
-    test_file = "it_development_set_test.txt"
+    #Knn Section
     file_paths = open(test_file, 'r')
-    count=1
-    accuracy_vec=[]
+    knn_accuracy_vec=[]
     usernames=[]
-    tot_predict=[]
-    # Read the test directory and get the list of test audio files
+    knn_tot_predict=[]
     for path in file_paths:
 
         path = path.strip()
@@ -157,51 +105,15 @@ elif take == 0:
         accuracy=np.round((np.max(counts)/total_frames)*100,2)
         print("il vincitore è l'utente",user,"con",accuracy,"%")
 
-        accuracy_vec.append(accuracy)
+        knn_accuracy_vec.append(accuracy)
         usernames.append(user)
         for j in range(len(predict)):
-            tot_predict.append(predict[j])
-    
-    cm = confusion_matrix(class_y,tot_predict)
-    user_list =np.unique(class_y)
-    cm_display = ConfusionMatrixDisplay(cm, display_labels=user_list).plot()
-    
-    #fig, ax = plt.subplots()
-    #ax.plot(usernames, accuracy_vec, 'o')
-    #ax.set_ylabel('Accuracy %')
-    #ax.set_xlabel('utente')
-    #ax.set_xticks(accuracy_vec)
-    #ax.set_title('KNN identification')       
-    #plt.grid()
-    #plt.show()
+            knn_tot_predict.append(predict[j])
+    #end Knn Section
 
 
-#Verifica Gmm
-if take == 1:
-    print("Enter the File name from Test Audio Sample Collection :")
-    path = input().strip()
-
-    print("Testing Audio : ", path)
-    sr, audio = read(source + path)
-    vector = extract_features(audio, sr)
-
-    log_likelihood = np.zeros(len(gmm_models))
-
-    for i in range(len(gmm_models)):
-        gmm = gmm_models[i]  # checking with each model one by one
-        scores = np.array(gmm.score(vector))
-        log_likelihood[i] = scores.sum()
-
-    winner = np.argmax(log_likelihood)
-    print("\tdetected as - ", speakers[winner])
-
-    time.sleep(1.0)
-
-elif take == 0:
-    test_file = "it_development_set_test.txt"
+    #Gmm Section
     file_paths = open(test_file, 'r')
-
-    # Read the test directory and get the list of test audio files
     for path in file_paths:
 
         total_sample += 1.0
@@ -229,5 +141,79 @@ elif take == 0:
     accuracy = ((total_sample - error) / total_sample) * 100
 
     print("The Accuracy Percentage for the current testing Performance with MFCC + GMM is : ", accuracy, "%")
+    #end Gmm Section
+
+    #Plot Section
+    user_list =np.unique(class_y)
+       
+    fig, (svm_ax, knn_ax) = plt.subplots(1,2)
+    svm_cm_display = ConfusionMatrixDisplay.from_predictions(class_y,svm_tot_predict, display_labels=user_list)
+    svm_cm_display.ax_.set_title('SVM Confusion Matrix')
+    knn_cm_display = ConfusionMatrixDisplay.from_predictions(class_y,knn_tot_predict, display_labels=user_list)
+    knn_cm_display.ax_.set_title('K-NN Confusion Matrix')
+    svm_ax.plot(usernames, svm_accuracy_vec, 'o')
+    svm_ax.set_ylabel(' Accuracy %')
+    svm_ax.set_title(' SVM identification')       
+    svm_ax.grid()
+    knn_ax.plot(usernames, knn_accuracy_vec, 'o')
+    knn_ax.set_ylabel('Accuracy %')
+    knn_ax.set_xlabel('utente')
+    knn_ax.set_title('KNN identification')
+    knn_ax.grid()
+    plt.plot()
+    plt.show(block=True)
 
 
+#verifica file singolo
+if take == 1:
+    #Svm
+    print("Enter the File name from Test Audio Sample Collection :")
+    path = input().strip()
+    print("(SVM)","\n","Testing Audio : ", path)
+    
+    sr, audio = read(source + path)
+    vector = extract_features(audio, sr)
+     
+    svm = svm_models[0]
+    predict= svm.predict(vector) #predizione della classe di ogni segmento dell'audio
+    total_frames=predict.size #numero totale di segmenti
+    uniques, counts  =np.unique(predict, return_counts=True) #numero di occorrenze delle predizioni
+    res=dict(zip(counts,uniques))
+    user=res.get(np.max(counts))
+    accuracy=np.round((np.max(counts)/total_frames)*100,2)
+    print("il vincitore è l'utente",user,"con",accuracy,"%")
+    #
+
+    #knn
+    print("(KNN)","\n","Testing Audio : ", path)
+    sr, audio = read(source + path)
+    vector = extract_features(audio, sr)
+    
+    knn = knn_models[0]
+    predict= knn.predict(vector) #predizione della classe di ogni segmento dell'audio
+    total_frames=predict.size #numero totale di segmenti
+    uniques, counts  =np.unique(predict, return_counts=True) #numero di occorrenze delle predizioni
+    res=dict(zip(counts,uniques))
+    user=res.get(np.max(counts))
+    accuracy=np.round((np.max(counts)/total_frames)*100,2)
+    print("il vincitore è l'utente",user,"con",accuracy,"%")
+    #
+
+    #gmm
+
+    print("Testing Audio : ", path)
+    sr, audio = read(source + path)
+    vector = extract_features(audio, sr)
+
+    log_likelihood = np.zeros(len(gmm_models))
+
+    for i in range(len(gmm_models)):
+        gmm = gmm_models[i]  # checking with each model one by one
+        scores = np.array(gmm.score(vector))
+        log_likelihood[i] = scores.sum()
+
+    winner = np.argmax(log_likelihood)
+    print("\tdetected as - ", speakers[winner])
+
+    time.sleep(1.0)
+    
