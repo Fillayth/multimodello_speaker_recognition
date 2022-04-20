@@ -12,7 +12,8 @@ warnings.filterwarnings("ignore")
 
 
 # path to training data
-source = "it_development_set/"
+#source = "it_development_set/"
+source = "en_development_set/"
 
 # path where training speakers will be saved
 destgmm = 'Speakers_models/Gmm/'
@@ -49,13 +50,14 @@ take = int(input().strip())
 
 #verifica Test-Set
 if take == 0:
+    
     #svm Section
-    test_file = "it_development_set_test.txt"
+    #test_file = "it_development_set_test.txt"
+    test_file = "en_development_set_test.txt"
     file_paths = open(test_file, 'r')
     svm_accuracy_vec=[]
     usernames=[]
     svm_tot_predict=[]
-    
     for path in file_paths:
 
         path = path.strip()
@@ -81,7 +83,7 @@ if take == 0:
         usernames.append(user)
         for j in range(len(predict)):
             svm_tot_predict.append(predict[j])
-        #end Svm Section
+    #end Svm Section
 
     #Knn Section
     file_paths = open(test_file, 'r')
@@ -136,20 +138,17 @@ if take == 0:
         if speakers[winner] != checker_name:
                 error += 1
         time.sleep(1.0)
-
     print(error, total_sample)
     accuracy = ((total_sample - error) / total_sample) * 100
-
     print("The Accuracy Percentage for the current testing Performance with MFCC + GMM is : ", accuracy, "%")
     #end Gmm Section
 
     #Plot Section
     user_list =np.unique(class_y)
-       
     fig, (svm_ax, knn_ax) = plt.subplots(1,2)
-    svm_cm_display = ConfusionMatrixDisplay.from_predictions(class_y,svm_tot_predict, display_labels=user_list)
+    svm_cm_display = ConfusionMatrixDisplay.from_predictions(class_y,svm_tot_predict, display_labels=user_list, normalize="true", values_format='.2%')
     svm_cm_display.ax_.set_title('SVM Confusion Matrix')
-    knn_cm_display = ConfusionMatrixDisplay.from_predictions(class_y,knn_tot_predict, display_labels=user_list)
+    knn_cm_display = ConfusionMatrixDisplay.from_predictions(class_y,knn_tot_predict, display_labels=user_list, normalize="true", values_format='.2%')
     knn_cm_display.ax_.set_title('K-NN Confusion Matrix')
     svm_ax.plot(usernames, svm_accuracy_vec, 'o')
     svm_ax.set_ylabel(' Accuracy %')
