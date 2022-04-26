@@ -2,6 +2,7 @@ import pickle as cPickle
 import numpy as np
 from scipy.io.wavfile import read
 from sklearn.mixture import GaussianMixture as GMM
+from sklearn.cluster import KMeans
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier as KNN
 from featureextraction import extract_features
@@ -65,7 +66,7 @@ for path in file_paths:
             class_y.append((path.split("-")[0]))    
       
      #GMM Fit
-     gmm = GMM(n_components = 16, covariance_type='diag',n_init = 3)
+     gmm = GMM(n_components = 16, covariance_type='full',tol=0.00001, max_iter=1000, verbose=1)
      gmm.fit(features)
      # dumping the trained gaussian model
      picklefile = path.split("-")[0]+".gmm"
@@ -89,7 +90,7 @@ for path in file_paths:
 
 
 #SVM Fit
-svm = SVC(C=100.0, kernel='rbf', gamma='auto', probability=True, tol=0.001, cache_size=200, 
+svm = SVC(C=1000.0, kernel='rbf', gamma='auto', probability=True, tol=0.001, cache_size=200, 
 class_weight='balanced', verbose=True, max_iter=- 1, decision_function_shape='ovo', break_ties=False, random_state=None)
 svm.fit(class_x,class_y)       
 #dumping the trained svm model
@@ -98,7 +99,7 @@ cPickle.dump(svm, open(destsvm + picklefile, 'wb'))
 
 
 #KNN Fit
-knn = KNN(n_neighbors=10, weights="uniform", algorithm="auto", leaf_size=30,
+knn = KNN(n_neighbors=7, weights="uniform", algorithm="auto", leaf_size=30,
 p=2, metric="minkowski", metric_params=None, n_jobs=None)
 knn.fit(class_x,class_y)
 #dumping the trained knn model

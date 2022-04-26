@@ -116,49 +116,68 @@ if take == 0:
 
     #Gmm Section
     file_paths = open(test_file, 'r')
+    gmm_tot_score=[]
+    gmm_class_y=[]
+    gmm_accuracy_vec=[]
+    gmm_usernames=[]
+    gmm_int=[]
+    gmm_tot_predict=[]
     for path in file_paths:
-
+        gmm_tot_score=[]
         total_sample += 1.0
         path = path.strip()
-        print("Testing Audio : ", path)
+        print("(GMM)","\n","Testing Audio : ", path)
         sr, audio = read(source + path)
         vector = extract_features(audio, sr)
 
         log_likelihood = np.zeros(len(gmm_models))
-
+        predict_likelihood = np.zeros(len(gmm_models))
+        
         for i in range(len(gmm_models)):
                 gmm = gmm_models[i]  # checking with each model one by one
                 scores = np.array(gmm.score(vector))
                 log_likelihood[i] = scores.sum()
-
-        winner = np.argmax(log_likelihood)
-        print("\tdetected as - ", speakers[winner])
-
-        checker_name = path.split("-")[0]
-        if speakers[winner] != checker_name:
-                error += 1
-        time.sleep(1.0)
-    print(error, total_sample)
-    accuracy = ((total_sample - error) / total_sample) * 100
-    print("The Accuracy Percentage for the current testing Performance with MFCC + GMM is : ", accuracy, "%")
+                frame_score = np.array(gmm.score_samples(vector))
+                gmm_tot_score.append(frame_score)    
+                
+        gmm_predict=np.argmax(gmm_tot_score,axis=0)
+        for i in range(len(gmm_predict)):
+         gmm_tot_predict.append(speakers[gmm_predict[i]])
+         gmm_class_y.append((path.split("-")[0]))
+       
+        total_frames=gmm_predict.size #numero totale di segmenti
+        uniques, counts  =np.unique(gmm_predict, return_counts=True) #numero di occorrenze delle predizioni
+        res=dict(zip(counts,uniques))
+        user_int=res.get(np.max(counts))
+        user=speakers[user_int]
+        accuracy=np.round((np.max(counts)/total_frames)*100,2)
+        print("il vincitore è l'utente",user,"con",accuracy,"%")
+        gmm_accuracy_vec.append(accuracy)
+        gmm_usernames.append(user)
     #end Gmm Section
 
     #Plot Section
     user_list =np.unique(class_y)
-    fig, (svm_ax, knn_ax) = plt.subplots(1,2)
+    fig, (svm_ax, knn_ax, gmm_ax) = plt.subplots(3,1)
     svm_cm_display = ConfusionMatrixDisplay.from_predictions(class_y,svm_tot_predict, display_labels=user_list, normalize="true", values_format='.2%')
     svm_cm_display.ax_.set_title('SVM Confusion Matrix')
     knn_cm_display = ConfusionMatrixDisplay.from_predictions(class_y,knn_tot_predict, display_labels=user_list, normalize="true", values_format='.2%')
     knn_cm_display.ax_.set_title('K-NN Confusion Matrix')
+    gmm_cm_display = ConfusionMatrixDisplay.from_predictions(gmm_class_y,gmm_tot_predict, display_labels=user_list, normalize="true", values_format='.2%')
+    gmm_cm_display.ax_.set_title('GMM Confusion Matrix')
     svm_ax.plot(usernames, svm_accuracy_vec, 'o')
     svm_ax.set_ylabel(' Accuracy %')
     svm_ax.set_title(' SVM identification')       
     svm_ax.grid()
     knn_ax.plot(usernames, knn_accuracy_vec, 'o')
     knn_ax.set_ylabel('Accuracy %')
-    knn_ax.set_xlabel('utente')
     knn_ax.set_title('KNN identification')
     knn_ax.grid()
+    gmm_ax.plot(gmm_usernames, gmm_accuracy_vec, 'o')
+    gmm_ax.set_ylabel('Accuracy %')
+    gmm_ax.set_xlabel('utente')
+    gmm_ax.set_title('Gmm identification')
+    gmm_ax.grid()
     plt.plot()
     plt.show(block=True)
 
