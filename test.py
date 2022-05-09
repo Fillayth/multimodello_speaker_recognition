@@ -8,20 +8,31 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import precision_score
+from sklearn.preprocessing import normalize
 import warnings
+import datetime
 
 warnings.filterwarnings("ignore")
 
+print("Per lavorare sul dataset inglese (EN) : Premi '1' o per lavorare sul dataset in italiano (ITA) : Premi '0'")
+take_lang = int(input().strip())
 
-# path to training data
-source = "it_development_set/"
-#source = "en_development_set/"
 
-# path where training speakers will be saved
-destgmm = 'Speakers_models/Gmm/'
-destsvm = "Speakers_models/Svm/"
-destknn = "Speakers_models/Knn/"
-
+if take_lang == 0:
+ source = "it_development_set/"
+ destgmm = 'Speakers_models/ita/Gmm/'
+ destsvm = "Speakers_models/ita/Svm/"
+ destknn = "Speakers_models/ita/Knn/"
+ test_file = "it_development_set_test.txt"
+ log_file = open("Plot/it_log.txt", 'a')
+ 
+if take_lang == 1:
+ source   = "en_development_set/"
+ destgmm = 'Speakers_models/en/Gmm/'
+ destsvm = "Speakers_models/en/Svm/"
+ destknn = "Speakers_models/en/Knn/"
+ test_file = "en_development_set_test.txt"
+ log_file = open("Plot/en_log.txt", 'a')
 
 #get files
 gmm_files = [os.path.join(destgmm, fname) for fname in
@@ -37,12 +48,8 @@ gmm_models = [cPickle.load(open(fname, 'rb')) for fname in gmm_files]
 svm_models = [cPickle.load(open(fname, 'rb')) for fname in svm_files]
 knn_models = [cPickle.load(open(fname, 'rb')) for fname in knn_files]
 
-
-
 speakers = [fname.split("/")[-1].split(".gmm")[0] for fname
             in gmm_files]
-
-
 class_y=[]
 
 print("Do you want to Test a Single Audio: Press '1' or The complete Test Audio Sample: Press '0' ?")
@@ -53,8 +60,6 @@ take = int(input().strip())
 if take == 0:
     
     #svm Section
-    test_file = "it_development_set_test.txt"
-    #test_file = "en_development_set_test.txt"
     file_paths = open(test_file, 'r')
     svm_tot_predict=[]
     for path in file_paths:
@@ -117,16 +122,25 @@ if take == 0:
     #end Gmm Section
 
     #Plot Section#
+    
+    data = datetime.datetime.now()
+    print("------------------------",data,"------------------------------------------------", file= log_file)
+    print("I modelli si presentano con questi iperparametri:","\n",svm,"\n",knn,"\n",gmm,"\n", file= log_file)
+    
     #model Accuracy
     svm_accuracy=np.round(accuracy_score(class_y,svm_tot_predict)*100,2)
     knn_accuracy=np.round(accuracy_score(class_y,knn_tot_predict)*100,2)
     gmm_accuracy=np.round(accuracy_score(gmm_class_y,gmm_tot_predict)*100,2)
-    print("l'accuratezza dei tre modelli è:","\n","(SVM)",svm_accuracy,"%","\n","(KNN)",knn_accuracy,"%","\n","(GMM)",gmm_accuracy,"%")
+    print("l'accuratezza dei tre modelli è:","\n","(SVM)",svm_accuracy,"%","\n","(KNN)",knn_accuracy,"%","\n","(GMM)",gmm_accuracy,"%","\n", file = log_file)
+    
     #model precision
     svm_precision=np.round(precision_score(class_y,svm_tot_predict,average=None)*100,2)
     knn_precision=np.round(precision_score(class_y,knn_tot_predict,average=None)*100,2)
     gmm_precision=np.round(precision_score(gmm_class_y,gmm_tot_predict,average=None)*100,2)
-    print("la precisione dei tre modelli è:","\n","(SVM)",svm_precision,"%","\n","(KNN)",knn_precision,"%","\n","(GMM)",gmm_precision,"%")
+    print("la precisione dei tre modelli è:","\n","(SVM)",svm_precision,"%","\n","(KNN)",knn_precision,"%","\n","(GMM)",gmm_precision,"%","\n",file = log_file)
+    
+    log_file.close()
+    
     #confusion matrix
     user_list =np.unique(class_y)
     fig, (svm_ax, knn_ax, gmm_ax) = plt.subplots(3,1)
@@ -153,54 +167,56 @@ if take == 0:
 
 #verifica file singolo
 if take == 1:
+    
     #Svm
     print("Enter the File name from Test Audio Sample Collection :")
     path = input().strip()
-    print("(SVM)","\n","Testing Audio : ", path)
-    
+    print("\n","Testing Audio: ", path)
     sr, audio = read(source + path)
-    vector = extract_features(audio, sr)
-     
+    vector = extract_features(audio, sr) 
     svm = svm_models[0]
     predict= svm.predict(vector) #predizione della classe di ogni segmento dell'audio
     total_frames=predict.size #numero totale di segmenti
     uniques, counts  =np.unique(predict, return_counts=True) #numero di occorrenze delle predizioni
     res=dict(zip(counts,uniques))
     user=res.get(np.max(counts))
-    precision=np.round((np.max(counts)/total_frames)*100,2)
-    print("il vincitore è l'utente",user,"con",precision,"%")
+    maxim=np.mean(svm.predict_proba(vector), axis=0)
+    svm_prob=np.round(np.max(maxim)*100,2)
+    print("(SVM) è stato identificato l'utente:",user,"con il",svm_prob,"%")
     #
 
     #knn
-    print("(KNN)","\n","Testing Audio : ", path)
     sr, audio = read(source + path)
     vector = extract_features(audio, sr)
-    
     knn = knn_models[0]
     predict= knn.predict(vector) #predizione della classe di ogni segmento dell'audio
     total_frames=predict.size #numero totale di segmenti
     uniques, counts  =np.unique(predict, return_counts=True) #numero di occorrenze delle predizioni
     res=dict(zip(counts,uniques))
     user=res.get(np.max(counts))
-    precision=np.round((np.max(counts)/total_frames)*100,2)
-    print("il vincitore è l'utente",user,"con",precision,"%")
+    maxim=np.mean(knn.predict_proba(vector), axis=0)
+    knn_prob=np.round(np.max(maxim)*100,2)
+    print("(KNN) è stato identificato l'utente:",user,"con il",knn_prob,"%")
     #
 
     #gmm
-
-    print("Testing Audio : ", path)
     sr, audio = read(source + path)
     vector = extract_features(audio, sr)
-
     log_likelihood = np.zeros(len(gmm_models))
-
     for i in range(len(gmm_models)):
         gmm = gmm_models[i]  # checking with each model one by one
         scores = np.array(gmm.score(vector))
         log_likelihood[i] = scores.sum()
-
-    winner = np.argmax(log_likelihood)
-    print("\tdetected as - ", speakers[winner])
-
-    time.sleep(1.0)
+    normalized=normalize(log_likelihood[:,np.newaxis], axis=0).ravel()   
+    winner = np.argmax(normalized)
+    gmm_prob=np.round((1+np.max(normalized))*100,2)
+    print("(GMM) è stato identificato l'utente:", speakers[winner],"con il",gmm_prob,"%","\n")
     
+    access_mean=(svm_prob+gmm_prob+knn_prob)/3
+    access_mean=np.round(access_mean,2)
+    if access_mean > 80:
+        print("Accesso consentinto per l'utente", user, "con indice di sicurezza:", access_mean )
+    else:
+        print("accesso negato, riprovare")    
+    
+    #Claudia-20111210-ied/wav/it-0460.wav 

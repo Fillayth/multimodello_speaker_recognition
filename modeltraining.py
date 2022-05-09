@@ -6,33 +6,33 @@ from sklearn.cluster import KMeans
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier as KNN
 from featureextraction import extract_features
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
-from sklearn.preprocessing import OneHotEncoder
 import warnings
 warnings.filterwarnings("ignore")
 
-# path to training data
-#source   = "en_development_set/"
-source = "it_development_set/"
 
-# path where training speakers will be saved
-destgmm = 'Speakers_models/Gmm/'
-destsvm = "Speakers_models/Svm/"
-destknn = "Speakers_models/Knn/"
-#train_file = "en_development_set_enroll.txt"
-train_file = "it_development_set_enroll.txt"
+print("Per lavorare sul dataset inglese (EN) : Premi '1' o per lavorare sul dataset in italiano (ITA) : Premi '0'")
+take = int(input().strip())
+
+
+if take == 0:
+ source = "it_development_set/"
+ destgmm = 'Speakers_models/ita/Gmm/'
+ destsvm = "Speakers_models/ita/Svm/"
+ destknn = "Speakers_models/ita/Knn/"
+ train_file = "it_development_set_enroll.txt"
+if take == 1:
+ source   = "en_development_set/"
+ destgmm = 'Speakers_models/en/Gmm/'
+ destsvm = "Speakers_models/en/Svm/"
+ destknn = "Speakers_models/en/Knn/"
+ train_file = "en_development_set_enroll.txt"
+
+
 file_paths = open(train_file, 'r')
-
-i=0
-j=0
+n_sample = 8  #numero di file audio per utente nel training set
 count = 1
-
-
-#vector of features
-features = np.asarray(())
-#Dataset for classificator model and vector of target
-class_x = np.asarray(())
+features = np.asarray(()) #vector of features
+class_x = np.asarray(()) #Dataset for classificator model and vector of target
 class_y=[]
 
 
@@ -55,7 +55,7 @@ for path in file_paths:
     
      #a differenza del vettore utile alla produzione dei gmm (ricreato per ogni persona) per i classificatori si genera un un'unico dataset
      #assegnando ad ogni feature proveniente dallo stesso soggetto una classe numerica crescente
-    if count == 5:
+    if count == n_sample:
      
      if class_x.size == 0:
         class_x= features
@@ -66,7 +66,7 @@ for path in file_paths:
             class_y.append((path.split("-")[0]))    
       
      #GMM Fit
-     gmm = GMM(n_components = 20, covariance_type='full',tol=0.0000001, max_iter=1000, verbose=1)
+     gmm = GMM(n_components = 6, covariance_type='full',tol=0.0000001, max_iter=1000, verbose=1)
      gmm.fit(features)
      # dumping the trained gaussian model
      picklefile = path.split("-")[0]+".gmm"
@@ -74,37 +74,25 @@ for path in file_paths:
      print('+ modeling completed for speaker:', picklefile,
               " with data point = ", features.shape)
 
-     i=i+1         
+             
      features=np.asarray(())
      count=0
      
     count = count + 1       
 
-#one hot encoder
-#label_encoder =LabelEncoder()
-#integer_encoded = label_encoder.fit_transform(class_y)        
-#onehot_encoder = OneHotEncoder(sparse=False)
-#integer_encoded = integer_encoded.reshape(len(integer_encoded), 1)
-#onehot_encoded = onehot_encoder.fit_transform(integer_encoded)
-#print(onehot_encoded)
-
 
 #SVM Fit
-svm = SVC(C=10.0, kernel='rbf', gamma='auto', probability=True, tol=0.001, cache_size=200, 
-class_weight='balanced', verbose=True, max_iter=- 1, decision_function_shape='ovo', break_ties=False, random_state=None)
+svm = SVC(C=30.0, kernel='rbf', gamma='auto', probability=True, tol=0.001, cache_size=200, class_weight='balanced', verbose=True, max_iter=- 1, decision_function_shape='ovo', break_ties=False, random_state=None)
 svm.fit(class_x,class_y)       
-#dumping the trained svm model
 picklefile = "svmodel.svm"
-cPickle.dump(svm, open(destsvm + picklefile, 'wb'))
+cPickle.dump(svm, open(destsvm + picklefile, 'wb')) #dumping the trained svm model
 
 
 #KNN Fit
-knn = KNN(n_neighbors=10, weights="uniform", algorithm="auto", leaf_size=30,
-p=2, metric="minkowski", metric_params=None, n_jobs=None)
+knn = KNN(n_neighbors=12, weights="distance", algorithm="auto", leaf_size=30, p=2, metric="minkowski", metric_params=None, n_jobs=None)
 knn.fit(class_x,class_y)
-#dumping the trained knn model
 picklefile = "knnmodel.knn"
-cPickle.dump(knn, open(destknn + picklefile, 'wb'))
+cPickle.dump(knn, open(destknn + picklefile, 'wb')) #dumping the trained knn model
 
-
+print('\a')
     
