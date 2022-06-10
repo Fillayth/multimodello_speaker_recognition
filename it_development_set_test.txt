@@ -1,11 +1,11 @@
+albertobus-20090710-naf/wav/it-0771.wav
 albertobus-20090710-naf/wav/it-0779.wav
-albertobus-20090710-naf/wav/it-0780.wav
 AlbertoPavan-20081203-aov/wav/it-0872.wav
 AlbertoPavan-20081203-aov/wav/it-0873.wav
+alescan-20090331-pmd/wav/it-0638.wav
 alescan-20090331-pmd/wav/it-0646.wav
-alescan-20090331-pmd/wav/it-0647.wav
+Alessia-20111005-qfz/wav/it-0805.wav
 Alessia-20111005-qfz/wav/it-0813.wav         
-Alessia-20111005-qfz/wav/it-0814.wav 
 Andros-20080721-euy/wav/it-1173.wav
 Andros-20080721-euy/wav/it-1174.wav
 Andy86-20080619-cmg/wav/it-0944.wav          
@@ -14,5 +14,3 @@ Claudia-20111210-ied/wav/it-0460.wav
 Claudia-20111210-ied/wav/it-0461.wav
 Nicole-20110820-hpf/wav/it-0391.wav          
 Nicole-20110820-hpf/wav/it-0392.wav 
-Shadow-20111030-oqn/wav/it-0440.wav      
-Shadow-20111030-oqn/wav/it-0441.wav   

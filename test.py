@@ -1,8 +1,10 @@
+from cmath import exp
 import time
 import os
 import pickle as cPickle
 import numpy as np
 from scipy.io.wavfile import read
+from scipy.special import softmax
 from featureextraction import extract_features
 import matplotlib.pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay
@@ -77,7 +79,7 @@ if take == 0:
 
         for j in range(len(predict)):
             svm_tot_predict.append(predict[j])
-        #print("il vincitore è l'utente",user,"con",precision,"% di precisione")    
+           
     #end Svm Section
 
     #Knn Section
@@ -124,7 +126,7 @@ if take == 0:
     #Plot Section#
     
     data = datetime.datetime.now()
-    print("------------------------",data,"------------------------------------------------", file= log_file)
+    print("------------------------",data,"-------------------------", file= log_file)
     print("I modelli si presentano con questi iperparametri:","\n",svm,"\n",knn,"\n",gmm,"\n", file= log_file)
     
     #model Accuracy
@@ -139,6 +141,9 @@ if take == 0:
     gmm_precision=np.round(precision_score(gmm_class_y,gmm_tot_predict,average=None)*100,2)
     print("la precisione dei tre modelli è:","\n","(SVM)",svm_precision,"%","\n","(KNN)",knn_precision,"%","\n","(GMM)",gmm_precision,"%","\n",file = log_file)
     
+    #mean precision
+    print("la precisione media dei tre modelli è:","\n","(SVM)",np.round(svm_precision.mean(),2),"%","\n","(KNN)",np.round(knn_precision.mean(),2),"%","\n","(GMM)",np.round(gmm_precision.mean(),2),"%","\n",file = log_file)
+
     log_file.close()
     
     #confusion matrix
@@ -176,13 +181,12 @@ if take == 1:
     vector = extract_features(audio, sr) 
     svm = svm_models[0]
     predict= svm.predict(vector) #predizione della classe di ogni segmento dell'audio
-    total_frames=predict.size #numero totale di segmenti
     uniques, counts  =np.unique(predict, return_counts=True) #numero di occorrenze delle predizioni
     res=dict(zip(counts,uniques))
-    user=res.get(np.max(counts))
+    svm_user=res.get(np.max(counts))
     maxim=np.mean(svm.predict_proba(vector), axis=0)
     svm_prob=np.round(np.max(maxim)*100,2)
-    print("(SVM) è stato identificato l'utente:",user,"con il",svm_prob,"%")
+    print("(SVM) è stato identificato l'utente:",svm_user,"con il",svm_prob,"% di probabilità")
     #
 
     #knn
@@ -190,33 +194,40 @@ if take == 1:
     vector = extract_features(audio, sr)
     knn = knn_models[0]
     predict= knn.predict(vector) #predizione della classe di ogni segmento dell'audio
-    total_frames=predict.size #numero totale di segmenti
     uniques, counts  =np.unique(predict, return_counts=True) #numero di occorrenze delle predizioni
     res=dict(zip(counts,uniques))
-    user=res.get(np.max(counts))
+    knn_user=res.get(np.max(counts))
     maxim=np.mean(knn.predict_proba(vector), axis=0)
     knn_prob=np.round(np.max(maxim)*100,2)
-    print("(KNN) è stato identificato l'utente:",user,"con il",knn_prob,"%")
+    print("(KNN) è stato identificato l'utente:",knn_user,"con il",knn_prob,"% di probabilità")
     #
 
     #gmm
     sr, audio = read(source + path)
     vector = extract_features(audio, sr)
     log_likelihood = np.zeros(len(gmm_models))
+    predict_prob = np.zeros(len(gmm_models))
     for i in range(len(gmm_models)):
         gmm = gmm_models[i]  # checking with each model one by one
-        scores = np.array(gmm.score(vector))
+        scores =gmm.score(vector)
         log_likelihood[i] = scores.sum()
-    normalized=normalize(log_likelihood[:,np.newaxis], axis=0).ravel()   
-    winner = np.argmax(normalized)
-    gmm_prob=np.round((1+np.max(normalized))*100,2)
-    print("(GMM) è stato identificato l'utente:", speakers[winner],"con il",gmm_prob,"%","\n")
+        
     
-    access_mean=(svm_prob+gmm_prob+knn_prob)/3
+    exp_score=np.exp(log_likelihood)
+    sum_exp=exp_score.sum()
+    exp_score_norm=(exp_score/sum_exp)
+    gmm_point=np.round((np.max(exp_score_norm))*100,2)
+    winner = np.argmax(exp_score_norm) 
+    gmm_user = speakers[winner]
+    print("(GMM) è stato identificato l'utente:", gmm_user ,"con un punteggio di",gmm_point,"\n")
+    
+    #soglia basata sulla media delle probabilita di corretta previsione dei classificatori 
+    # e del massimo punteggio normalizzato della gmm
+
+    access_mean=(svm_prob+knn_prob)/2
     access_mean=np.round(access_mean,2)
-    if access_mean > 80:
-        print("Accesso consentinto per l'utente", user, "con indice di sicurezza:", access_mean )
+    if access_mean > 70 and gmm_user == knn_user == svm_user and gmm_point > 90 :
+        print("Accesso consentinto per l'utente", svm_user, "con indice di sicurezza:", access_mean )
     else:
-        print("accesso negato, riprovare")    
+        print("accesso negato, riprovare", access_mean)    
     
-    #Claudia-20111210-ied/wav/it-0460.wav 

@@ -1,34 +1,274 @@
------------------------- 2022-05-06 18:16:14.703018 ------------------------
+------------------------ 2022-05-12 11:35:25.479929 -------------------------
 I modelli si presentano con questi iperparametri: 
- SVC(C=25.0, class_weight='balanced', decision_function_shape='ovo',
-    gamma='auto', probability=True, verbose=True) 
- KNeighborsClassifier(n_neighbors=12) 
- GaussianMixture(max_iter=1000, n_components=4, tol=1e-07, verbose=1) 
+ SVC() 
+ KNeighborsClassifier() 
+ GaussianMixture() 
 
 l'accuratezza dei tre modelli è: 
- (SVM) 84.36 % 
- (KNN) 72.9 % 
- (GMM) 89.37 % 
+ (SVM) 84.33 % 
+ (KNN) 74.34 % 
+ (GMM) 82.19 % 
 
 la precisione dei tre modelli è: 
- (SVM) [85.67 89.79 72.27 72.46 89.35 88.13 80.4  90.39 81.5 ] % 
- (KNN) [78.7  73.61 65.4  62.04 76.12 83.36 70.02 72.32 64.96] % 
- (GMM) [88.5  97.68 83.64 80.87 91.75 87.83 85.92 93.42 88.6 ] % 
+ (SVM) [84.29 89.57 72.48 71.2  88.44 88.24 88.81 82.89] % 
+ (KNN) [76.55 75.11 68.8  60.87 76.14 84.78 74.91 70.06] % 
+ (GMM) [86.92 82.88 84.82 71.18 83.41 83.13 81.24 80.58] % 
 
------------------------- 2022-05-09 11:14:42.614507 ------------------------------------------------
+la precisione media dei tre modelli è: 
+ (SVM) 83.24 % 
+ (KNN) 73.4 % 
+ (GMM) 81.77 % 
+
+
+------------------------ 2022-05-13 16:01:26.034772 -------------------------
 I modelli si presentano con questi iperparametri: 
- SVC(C=25.0, class_weight='balanced', decision_function_shape='ovo',
-    gamma='auto', probability=True, verbose=True) 
- KNeighborsClassifier(n_neighbors=12) 
- GaussianMixture(max_iter=1000, n_components=4, tol=1e-07, verbose=1) 
+ SVC(C=10) 
+ KNeighborsClassifier(n_neighbors=8) 
+ GaussianMixture(n_components=8) 
 
 l'accuratezza dei tre modelli è: 
- (SVM) 84.36 % 
- (KNN) 72.9 % 
- (GMM) 89.37 % 
+ (SVM) 85.58 % 
+ (KNN) 74.46 % 
+ (GMM) 90.54 % 
 
 la precisione dei tre modelli è: 
- (SVM) [85.67 89.79 72.27 72.46 89.35 88.13 80.4  90.39 81.5 ] % 
- (KNN) [78.7  73.61 65.4  62.04 76.12 83.36 70.02 72.32 64.96] % 
- (GMM) [88.5  97.68 83.64 80.87 91.75 87.83 85.92 93.42 88.6 ] % 
+ (SVM) [86.92 89.41 74.09 72.29 88.33 89.49 91.46 84.36] % 
+ (KNN) [77.28 74.09 69.46 64.05 74.83 84.11 74.71 71.15] % 
+ (GMM) [87.67 98.28 86.94 83.22 90.66 88.68 93.54 92.04] % 
+
+la precisione media dei tre modelli è: 
+ (SVM) 84.54 % 
+ (KNN) 73.71 % 
+ (GMM) 90.13 % 
+
+------------------------ 2022-05-13 16:11:02.633527 -------------------------
+I modelli si presentano con questi iperparametri: 
+ SVC(C=5) 
+ KNeighborsClassifier(n_neighbors=16) 
+ GaussianMixture(n_components=20) 
+
+l'accuratezza dei tre modelli è: 
+ (SVM) 85.56 % 
+ (KNN) 74.34 % 
+ (GMM) 87.24 % 
+
+la precisione dei tre modelli è: 
+ (SVM) [86.02 89.89 74.21 72.73 88.55 89.35 91.45 84.11] % 
+ (KNN) [78.51 73.67 71.34 64.06 73.02 84.5  73.15 72.01] % 
+ (GMM) [82.27 98.63 82.07 79.3  86.92 84.74 92.6  88.88] % 
+
+la precisione media dei tre modelli è: 
+ (SVM) 84.54 % 
+ (KNN) 73.78 % 
+ (GMM) 86.93 % 
+
+------------------------ 2022-05-13 16:17:54.133000 -------------------------
+I modelli si presentano con questi iperparametri: 
+ SVC(C=15) 
+ KNeighborsClassifier(n_neighbors=10) 
+ GaussianMixture(n_components=12) 
+
+l'accuratezza dei tre modelli è: 
+ (SVM) 85.63 % 
+ (KNN) 74.78 % 
+ (GMM) 89.49 % 
+
+la precisione dei tre modelli è: 
+ (SVM) [86.78 89.77 75.12 72.3  88.17 89.23 91.35 84.19] % 
+ (KNN) [78.08 74.15 71.3  63.46 74.11 84.98 74.8  72.32] % 
+ (GMM) [88.43 98.53 85.3  79.41 89.67 87.63 91.9  89.96] % 
+
+la precisione media dei tre modelli è: 
+ (SVM) 84.61 % 
+ (KNN) 74.15 % 
+ (GMM) 88.85 % 
+
+------------------------ 2022-05-13 16:26:28.891503 -------------------------
+I modelli si presentano con questi iperparametri: 
+ SVC(C=25) 
+ KNeighborsClassifier(n_neighbors=12) 
+ GaussianMixture(n_components=6) 
+
+l'accuratezza dei tre modelli è: 
+ (SVM) 85.57 % 
+ (KNN) 74.87 % 
+ (GMM) 90.49 % 
+
+la precisione dei tre modelli è: 
+ (SVM) [86.82 89.36 75.98 71.82 88.14 88.94 91.21 84.17] % 
+ (KNN) [78.41 74.   71.86 64.06 73.87 85.78 74.63 71.92] % 
+ (GMM) [84.83 98.21 89.34 82.02 91.62 88.77 95.47 91.38] % 
+
+la precisione media dei tre modelli è: 
+ (SVM) 84.56 % 
+ (KNN) 74.32 % 
+ (GMM) 90.2 % 
+
+------------------------ 2022-05-13 16:34:01.604768 -------------------------
+I modelli si presentano con questi iperparametri: 
+ SVC(C=50) 
+ KNeighborsClassifier(n_neighbors=4) 
+ GaussianMixture(n_components=4) 
+
+l'accuratezza dei tre modelli è: 
+ (SVM) 85.54 % 
+ (KNN) 73.59 % 
+ (GMM) 90.12 % 
+
+la precisione dei tre modelli è: 
+ (SVM) [86.79 89.27 75.73 71.82 88.39 88.88 91.13 84.12] % 
+ (KNN) [74.13 73.9  66.96 61.32 75.38 85.18 76.06 68.91] % 
+ (GMM) [87.62 97.57 86.53 79.46 91.12 89.16 94.12 90.41] % 
+
+la precisione media dei tre modelli è: 
+ (SVM) 84.52 % 
+ (KNN) 72.73 % 
+ (GMM) 89.5 % 
+
+------------------------ 2022-05-14 10:20:14.076187 -------------------------
+I modelli si presentano con questi iperparametri: 
+ SVC(C=0.1) 
+ KNeighborsClassifier(n_neighbors=3) 
+ GaussianMixture(n_components=6) 
+
+l'accuratezza dei tre modelli è: 
+ (SVM) 77.24 % 
+ (KNN) 73.26 % 
+ (GMM) 90.93 % 
+
+la precisione dei tre modelli è: 
+ (SVM) [78.22 83.81 67.99 64.15 77.16 81.35 79.07 78.22] % 
+ (KNN) [73.07 73.   64.35 60.36 76.35 85.91 77.89 67.88] % 
+ (GMM) [88.8  98.63 88.53 83.54 90.08 88.55 95.52 90.48] % 
+
+la precisione media dei tre modelli è: 
+ (SVM) 76.25 % 
+ (KNN) 72.35 % 
+ (GMM) 90.52 % 
+
+------------------------ 2022-05-14 10:51:52.545596 -------------------------
+I modelli si presentano con questi iperparametri: 
+ SVC(C=0.5) 
+ KNeighborsClassifier(n_neighbors=9) 
+ GaussianMixture(n_components=3) 
+
+l'accuratezza dei tre modelli è: 
+ (SVM) 82.77 % 
+ (KNN) 74.66 % 
+ (GMM) 89.25 % 
+
+la precisione dei tre modelli è: 
+ (SVM) [83.04 88.34 71.43 70.12 86.49 86.66 86.84 80.27] % 
+ (KNN) [77.88 74.53 70.61 63.54 74.64 84.1  74.58 71.67] % 
+ (GMM) [85.68 97.64 85.68 77.57 90.83 89.38 93.69 88.12] % 
+
+la precisione media dei tre modelli è: 
+ (SVM) 81.65 % 
+ (KNN) 73.94 % 
+ (GMM) 88.57 % 
+
+------------------------ 2022-05-14 11:09:19.704069 -------------------------
+I modelli si presentano con questi iperparametri: 
+ SVC(C=12) 
+ KNeighborsClassifier(n_neighbors=14) 
+ GaussianMixture(n_components=7) 
+
+l'accuratezza dei tre modelli è: 
+ (SVM) 85.64 % 
+ (KNN) 74.68 % 
+ (GMM) 90.73 % 
+
+la precisione dei tre modelli è: 
+ (SVM) [86.92 89.78 74.53 72.23 88.44 89.12 91.29 84.45] % 
+ (KNN) [78.36 74.25 71.58 64.33 73.27 85.24 74.17 71.84] % 
+ (GMM) [88.06 98.89 88.1  82.91 90.3  89.17 95.06 89.94] % 
+
+la precisione media dei tre modelli è: 
+ (SVM) 84.6 % 
+ (KNN) 74.13 % 
+ (GMM) 90.3 % 
+
+------------------------ 2022-05-14 11:30:26.501627 -------------------------
+I modelli si presentano con questi iperparametri: 
+ SVC() 
+ KNeighborsClassifier() 
+ GaussianMixture(n_components=40) 
+
+l'accuratezza dei tre modelli è: 
+ (SVM) 84.33 % 
+ (KNN) 74.34 % 
+ (GMM) 79.96 % 
+
+la precisione dei tre modelli è: 
+ (SVM) [84.29 89.57 72.48 71.2  88.44 88.24 88.81 82.89] % 
+ (KNN) [76.55 75.11 68.8  60.87 76.14 84.78 74.91 70.06] % 
+ (GMM) [71.82 97.13 74.46 77.71 80.12 67.75 90.64 87.21] % 
+
+la precisione media dei tre modelli è: 
+ (SVM) 83.24 % 
+ (KNN) 73.4 % 
+ (GMM) 80.86 % 
+
+------------------------ 2022-05-14 12:53:57.864653 -------------------------
+I modelli si presentano con questi iperparametri: 
+ SVC(C=12, decision_function_shape='ovo', probability=True) 
+ KNeighborsClassifier(n_jobs=12, weights='distance') 
+ GaussianMixture(covariance_type='tied', init_params='random', n_components=6) 
+
+l'accuratezza dei tre modelli è: 
+ (SVM) 85.64 % 
+ (KNN) 74.85 % 
+ (GMM) 82.19 % 
+
+la precisione dei tre modelli è: 
+ (SVM) [86.92 89.78 74.53 72.23 88.44 89.12 91.29 84.45] % 
+ (KNN) [80.31 78.42 70.62 62.71 75.84 83.26 73.51 65.38] % 
+ (GMM) [86.92 82.88 84.82 71.18 83.41 83.13 81.24 80.58] % 
+
+la precisione media dei tre modelli è: 
+ (SVM) 84.6 % 
+ (KNN) 73.76 % 
+ (GMM) 81.77 % 
+
+------------------------ 2022-06-10 17:39:46.272694 -------------------------
+I modelli si presentano con questi iperparametri: 
+ SVC(C=12, probability=True) 
+ KNeighborsClassifier(n_jobs=12) 
+ GaussianMixture(n_components=6) 
+
+l'accuratezza dei tre modelli è: 
+ (SVM) 85.64 % 
+ (KNN) 74.34 % 
+ (GMM) 91.34 % 
+
+la precisione dei tre modelli è: 
+ (SVM) [86.92 89.78 74.53 72.23 88.44 89.12 91.29 84.45] % 
+ (KNN) [76.55 75.11 68.8  60.87 76.14 84.78 74.91 70.06] % 
+ (GMM) [89.28 98.89 89.05 80.04 91.08 91.19 95.46 91.79] % 
+
+la precisione media dei tre modelli è: 
+ (SVM) 84.6 % 
+ (KNN) 73.4 % 
+ (GMM) 90.85 % 
+
+------------------------ 2022-06-10 17:54:30.012769 -------------------------
+I modelli si presentano con questi iperparametri: 
+ SVC(C=12, probability=True) 
+ KNeighborsClassifier(n_jobs=12) 
+ GaussianMixture(n_components=6) 
+
+l'accuratezza dei tre modelli è: 
+ (SVM) 85.64 % 
+ (KNN) 74.34 % 
+ (GMM) 91.34 % 
+
+la precisione dei tre modelli è: 
+ (SVM) [86.92 89.78 74.53 72.23 88.44 89.12 91.29 84.45] % 
+ (KNN) [76.55 75.11 68.8  60.87 76.14 84.78 74.91 70.06] % 
+ (GMM) [89.28 98.89 89.05 80.04 91.08 91.19 95.46 91.79] % 
+
+la precisione media dei tre modelli è: 
+ (SVM) 84.6 % 
+ (KNN) 73.4 % 
+ (GMM) 90.85 % 
 

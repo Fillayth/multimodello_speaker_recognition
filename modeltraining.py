@@ -36,7 +36,7 @@ class_x = np.asarray(()) #Dataset for classificator model and vector of target
 class_y=[]
 
 
-# Extracting features for each speaker (5 files per speakers)
+# Extracting features for each speaker
 for path in file_paths:
     path = path.strip()
     print(path)
@@ -66,7 +66,7 @@ for path in file_paths:
             class_y.append((path.split("-")[0]))    
       
      #GMM Fit
-     gmm = GMM(n_components = 6, covariance_type='full',tol=0.0000001, max_iter=1000, verbose=1)
+     gmm = GMM(n_components=6,)
      gmm.fit(features)
      # dumping the trained gaussian model
      picklefile = path.split("-")[0]+".gmm"
@@ -82,17 +82,16 @@ for path in file_paths:
 
 
 #SVM Fit
-svm = SVC(C=30.0, kernel='rbf', gamma='auto', probability=True, tol=0.001, cache_size=200, class_weight='balanced', verbose=True, max_iter=- 1, decision_function_shape='ovo', break_ties=False, random_state=None)
-svm.fit(class_x,class_y)       
+svm = SVC(C=10, probability=True)        
+svm.fit(class_x,class_y)
 picklefile = "svmodel.svm"
 cPickle.dump(svm, open(destsvm + picklefile, 'wb')) #dumping the trained svm model
 
 
-#KNN Fit
-knn = KNN(n_neighbors=12, weights="distance", algorithm="auto", leaf_size=30, p=2, metric="minkowski", metric_params=None, n_jobs=None)
+#KNN Fit  
+knn=KNN(n_jobs=8) 
 knn.fit(class_x,class_y)
 picklefile = "knnmodel.knn"
 cPickle.dump(knn, open(destknn + picklefile, 'wb')) #dumping the trained knn model
-
 print('\a')
     
